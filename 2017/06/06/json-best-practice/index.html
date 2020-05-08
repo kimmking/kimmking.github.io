@@ -1,0 +1,739 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>JSON最佳实践 | kimmking&#39;s blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="kimmking">
+    
+
+    
+    <meta name="description" content="JSON是一种文本方式展示结构化数据的方式，从产生的时候开始就由于其简单好用、跨平台，特别适合HTTP下数据的传输（例如现在很流行的REST）而被广泛使用。by kimmking@163.com
+1、JSON是什么JSON起源于1999年的JS语言规范ECMA262的一个子集（即15.12章节描述了格式与解析），后来2003年作为一个数据格式ECMA404（很囧的序号有不有？）发布。2006年，作">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JSON最佳实践">
+<meta property="og:url" content="http://kimmking.github.io/2017/06/06/json-best-practice/index.html">
+<meta property="og:site_name" content="kimmking's blog">
+<meta property="og:description" content="JSON是一种文本方式展示结构化数据的方式，从产生的时候开始就由于其简单好用、跨平台，特别适合HTTP下数据的传输（例如现在很流行的REST）而被广泛使用。by kimmking@163.com
+1、JSON是什么JSON起源于1999年的JS语言规范ECMA262的一个子集（即15.12章节描述了格式与解析），后来2003年作为一个数据格式ECMA404（很囧的序号有不有？）发布。2006年，作">
+<meta property="og:image" content="https://raw.githubusercontent.com/kimmking/kk/master/images/json/jsonpath.png">
+<meta property="og:image" content="https://github.com/kimmking/kk/blob/master/images/json/json01.png?raw=true">
+<meta property="og:image" content="https://github.com/kimmking/kk/blob/master/images/json/json02.png?raw=true">
+<meta property="og:image" content="https://github.com/kimmking/kk/blob/master/images/json/rest.jpg?raw=true">
+<meta property="og:image" content="https://github.com/kimmking/kk/blob/master/images/json/json03.png?raw=true">
+<meta property="og:updated_time" content="2020-05-08T13:31:39.130Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JSON最佳实践">
+<meta name="twitter:description" content="JSON是一种文本方式展示结构化数据的方式，从产生的时候开始就由于其简单好用、跨平台，特别适合HTTP下数据的传输（例如现在很流行的REST）而被广泛使用。by kimmking@163.com
+1、JSON是什么JSON起源于1999年的JS语言规范ECMA262的一个子集（即15.12章节描述了格式与解析），后来2003年作为一个数据格式ECMA404（很囧的序号有不有？）发布。2006年，作">
+<meta name="twitter:creator" content="@kimmkingcn">
+
+    
+    <link rel="alternative" href="/atom.xml" title="kimmking&#39;s blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="kimmking&#39;s blog" title="kimmking&#39;s blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="kimmking&#39;s blog">kimmking&#39;s blog</a></h1>
+				<h2 class="blog-motto">产品和技术是互联网DNA的双螺旋</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">首页君</a></li>
+					
+						<li><a href="/archives">归档君</a></li>
+					
+						<li><a href="/about">关于我</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:kimmking.github.io">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2017/06/06/json-best-practice/" title="JSON最佳实践" itemprop="url">JSON最佳实践</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="kimmking" target="_blank" itemprop="author">kimmking</a>
+		
+  <p class="article-time">
+    <time datetime="2017-06-06T15:00:05.000Z" itemprop="datePublished"> 发表于 2017-06-06</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1_u3001JSON_u662F_u4EC0_u4E48"><span class="toc-number">1.</span> <span class="toc-text">1、JSON是什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2_u3001_u4F18_u7F3A_u70B9_u3001_u6807_u51C6_u4E0Eschema"><span class="toc-number">2.</span> <span class="toc-text">2、优缺点、标准与schema</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1__u7ED3_u6784_u4E0E_u7C7B_u578B"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 结构与类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2__u4F18_u70B9"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 优点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3__u7F3A_u70B9"><span class="toc-number">2.3.</span> <span class="toc-text">2.3 缺点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-__u5E38_u7528_u6280_u672F_u4E0E_u5DE5_u5177"><span class="toc-number">3.</span> <span class="toc-text">3. 常用技术与工具</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1__u76F8_u5173_u6280_u672F_u4EE5_u53CA_u4E0EXML_u7684_u5173_u7CFB"><span class="toc-number">3.1.</span> <span class="toc-text">3.1 相关技术以及与XML的关系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2_Java_u7C7B_u5E93"><span class="toc-number">3.2.</span> <span class="toc-text">3.2 Java类库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3__u5DE5_u5177"><span class="toc-number">3.3.</span> <span class="toc-text">3.3 工具</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-_JSON_u7F16_u7801_u6307_u5357"><span class="toc-number">4.</span> <span class="toc-text">4. JSON编码指南</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1_Google_JSON_u98CE_u683C_u6307_u5357"><span class="toc-number">4.1.</span> <span class="toc-text">4.1 Google JSON风格指南</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2__u4F7F_u7528JSON_u5B9E_u73B0API"><span class="toc-number">4.2.</span> <span class="toc-text">4.2 使用JSON实现API</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-_REST"><span class="toc-number">5.</span> <span class="toc-text">5. REST</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-_SwaggerUI_u5B9E_u73B0API_u6587_u6863_u7BA1_u7406_u4E0E_u5728_u7EBF_u6D4B_u8BD5"><span class="toc-number">6.</span> <span class="toc-text">6. SwaggerUI实现API文档管理与在线测试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-_JSON_u4F7F_u7528_u573A_u666F_u5206_u6790"><span class="toc-number">7.</span> <span class="toc-text">7. JSON使用场景分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-JSON_u7684_u4E00_u4E9B_u7ECF_u9A8C"><span class="toc-number">8.</span> <span class="toc-text">8.JSON的一些经验</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#8-1__u9075_u5FAAJava_Beans_u89C4_u8303_u4E0EJSON_u89C4_u8303"><span class="toc-number">8.1.</span> <span class="toc-text">8.1 遵循Java Beans规范与JSON规范</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-2__u4F7F_u7528_u6B63_u5E38_u7684key"><span class="toc-number">8.2.</span> <span class="toc-text">8.2 使用正常的key</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-3__u5173_u4E8E_u65E5_u671F_u5904_u7406"><span class="toc-number">8.3.</span> <span class="toc-text">8.3 关于日期处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-4__u81EA_u5B9A_u4E49_u5E8F_u5217_u5316_u4E0E_u53CD_u5E8F_u5217_u5316"><span class="toc-number">8.4.</span> <span class="toc-text">8.4 自定义序列化与反序列化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-5_JSONObject_u7684_u4F7F_u7528"><span class="toc-number">8.5.</span> <span class="toc-text">8.5 JSONObject的使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-6_Hibernate_u76F8_u5173_u95EE_u9898"><span class="toc-number">8.6.</span> <span class="toc-text">8.6 Hibernate相关问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-7__u6DF1_u5C42_u5D4C_u5957_u4E0E_u6CDB_u578B_u95EE_u9898"><span class="toc-number">8.7.</span> <span class="toc-text">8.7 深层嵌套与泛型问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-8__u62BD_u8C61_u7C7B_u578B_u4E0E_u5B50_u7C7B_u578B_u95EE_u9898"><span class="toc-number">8.8.</span> <span class="toc-text">8.8 抽象类型与子类型问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-9__u907F_u514D_u5FAA_u73AF_u5F15_u7528"><span class="toc-number">8.9.</span> <span class="toc-text">8.9 避免循环引用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-10__u6CE8_u610F_u7F16_u7801_u548C_u4E0D_u53EF_u89C1_u5B57_u7B26"><span class="toc-number">8.10.</span> <span class="toc-text">8.10 注意编码和不可见字符</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-fastjson_u7684_u6700_u4F73_u5B9E_u8DF5"><span class="toc-number">9.</span> <span class="toc-text">9.fastjson的最佳实践</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#9-1_Maven_u4E0B_u5F15_u5165Fastjson"><span class="toc-number">9.1.</span> <span class="toc-text">9.1 Maven下引入Fastjson</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-2__u5E8F_u5217_u5316_u4E00_u4E2A_u5BF9_u8C61_u6210JSON_u5B57_u7B26_u4E32"><span class="toc-number">9.2.</span> <span class="toc-text">9.2 序列化一个对象成JSON字符串</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-3__u53CD_u5E8F_u5217_u5316_u4E00_u4E2AJSON_u5B57_u7B26_u4E32_u6210Java_u5BF9_u8C61"><span class="toc-number">9.3.</span> <span class="toc-text">9.3 反序列化一个JSON字符串成Java对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-4__u65E5_u671F_u683C_u5F0F_u5904_u7406"><span class="toc-number">9.4.</span> <span class="toc-text">9.4 日期格式处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-5__u5E38_u89C1_u5E8F_u5217_u5316_u7279_u6027_u7684_u4F7F_u7528"><span class="toc-number">9.5.</span> <span class="toc-text">9.5 常见序列化特性的使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-6_Annotation_u6CE8_u89E3_u7684_u4F7F_u7528"><span class="toc-number">9.6.</span> <span class="toc-text">9.6 Annotation注解的使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-7__u81EA_u5B9A_u4E49_u5E8F_u5217_u5316_u4E0E_u53CD_u5E8F_u5217_u5316"><span class="toc-number">9.7.</span> <span class="toc-text">9.7 自定义序列化与反序列化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-8__u81EA_u5B9A_u4E49_u5E8F_u5217_u5316_u4E4B_u8FC7_u6EE4_u5668"><span class="toc-number">9.8.</span> <span class="toc-text">9.8 自定义序列化之过滤器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-9__u4E0ESpring_MVC_u7684_u914D_u5408_u4F7F_u7528"><span class="toc-number">9.9.</span> <span class="toc-text">9.9 与Spring MVC的配合使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-10__u4E0ESpring_Boot_u7684_u96C6_u6210_u4F7F_u7528"><span class="toc-number">9.10.</span> <span class="toc-text">9.10 与Spring Boot的集成使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-11__u6CDB_u578B_u5904_u7406"><span class="toc-number">9.11.</span> <span class="toc-text">9.11 泛型处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-12jaxrs_u652F_u6301"><span class="toc-number">9.12.</span> <span class="toc-text">9.12jaxrs支持</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-13_swagger_u652F_u6301"><span class="toc-number">9.13.</span> <span class="toc-text">9.13 swagger支持</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-14__u9ED8_u8BA4_u53C2_u6570_u914D_u7F6E"><span class="toc-number">9.14.</span> <span class="toc-text">9.14 默认参数配置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-Fastjson_u7684_u8BBE_u8BA1_u8BF4_u660E"><span class="toc-number">10.</span> <span class="toc-text">10.Fastjson的设计说明</span></a></li></ol>
+		
+		</div>
+		
+		<p>JSON是一种文本方式展示结构化数据的方式，从产生的时候开始就由于其简单好用、跨平台，特别适合HTTP下数据的传输（例如现在很流行的REST）而被广泛使用。by kimmking@163.com</p>
+<h2 id="1_u3001JSON_u662F_u4EC0_u4E48"><a href="#1_u3001JSON_u662F_u4EC0_u4E48" class="headerlink" title="1、JSON是什么"></a>1、JSON是什么</h2><p>JSON起源于1999年的<a href="http://javascript.crockford.com/" target="_blank" rel="external">JS语言规范ECMA262的一个子集</a>（即15.12章节描述了格式与解析），后来2003年作为一个数据格式<a href="http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf" target="_blank" rel="external">ECMA404</a>（很囧的序号有不有？）发布。<br>2006年，作为<a href="http://www.ietf.org/rfc/rfc4627.txt" target="_blank" rel="external">rfc4627</a>发布，这时规范增加到18页，去掉没用的部分，十页不到。</p>
+<p>JSON的应用很广泛，这里有超过100种语言下的JSON库：<a href="http://www.json.org/" target="_blank" rel="external">json.org</a>。</p>
+<p>更多的可以参考这里，<a href="https://github.com/burningtree/awesome-json" target="_blank" rel="external">关于json的一切</a>。</p>
+<h2 id="2_u3001_u4F18_u7F3A_u70B9_u3001_u6807_u51C6_u4E0Eschema"><a href="#2_u3001_u4F18_u7F3A_u70B9_u3001_u6807_u51C6_u4E0Eschema" class="headerlink" title="2、优缺点、标准与schema"></a>2、优缺点、标准与schema</h2><h3 id="2-1__u7ED3_u6784_u4E0E_u7C7B_u578B"><a href="#2-1__u7ED3_u6784_u4E0E_u7C7B_u578B" class="headerlink" title="2.1 结构与类型"></a>2.1 结构与类型</h3><p>这估计是最简单标准规范之一：</p>
+<ul>
+<li>只有两种结构：对象内的键值对集合结构和数组，对象用{}表示、内部是”key”:”value”，数组用[]表示，不同值用逗号分开</li>
+<li>基本数值有7个： false / null / true / object / array / number / string</li>
+<li>再加上结构可以嵌套，进而可以用来表达复杂的数据</li>
+<li>一个简单实例：</li>
+</ul>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">   "<span class="attribute">Image</span>": <span class="value">&#123;</span><br><span class="line">       "<span class="attribute">Width</span>":  <span class="value"><span class="number">800</span></span>,</span><br><span class="line">       "<span class="attribute">Height</span>": <span class="value"><span class="number">600</span></span>,</span><br><span class="line">       "<span class="attribute">Title</span>":  <span class="value"><span class="string">"View from 15th Floor"</span></span>,</span><br><span class="line">       "<span class="attribute">Thumbnail</span>": <span class="value">&#123;</span><br><span class="line">           "<span class="attribute">Url</span>":    <span class="value"><span class="string">"http://www.example.com/image/481989943"</span></span>,</span><br><span class="line">           "<span class="attribute">Height</span>": <span class="value"><span class="number">125</span></span>,</span><br><span class="line">           "<span class="attribute">Width</span>":  <span class="value"><span class="string">"100"</span></span><br><span class="line">       </span>&#125;</span>,</span><br><span class="line">       "<span class="attribute">IDs</span>": <span class="value">[<span class="number">116</span>, <span class="number">943</span>, <span class="number">234</span>, <span class="number">38793</span>]</span><br><span class="line">     </span>&#125;</span><br><span class="line"></span>&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-2__u4F18_u70B9"><a href="#2-2__u4F18_u70B9" class="headerlink" title="2.2 优点"></a>2.2 优点</h3><ul>
+<li>基于纯文本，所以对于人类阅读是很友好的。</li>
+<li>规范简单，所以容易处理，开箱即用，特别是JS类的ECMA脚本里是内建支持的，可以直接作为对象使用。</li>
+<li>平台无关性，因为类型和结构都是平台无关的，而且好处理，容易实现不同语言的处理类库，可以作为多个不同异构系统之间的数据传输格式协议，特别是在HTTP/REST下的数据格式。</li>
+</ul>
+<h3 id="2-3__u7F3A_u70B9"><a href="#2-3__u7F3A_u70B9" class="headerlink" title="2.3 缺点"></a>2.3 缺点</h3><p>缺点也很明显：</p>
+<ul>
+<li>性能一般，文本表示的数据一般来说比二进制大得多，在数据传输上和解析处理上都要更影响性能。</li>
+<li>缺乏schema，跟同是文本数据格式的XML比，在类型的严格性和丰富性上要差很多。XML可以借由XSD或DTD来定义复杂的格式，并由此来验证XML文档是否符合格式要求，甚至进一步的，可以基于XSD来生成具体语言的操作代码，例如apache xmlbeans。并且这些工具组合到一起，形成一套庞大的生态，例如基于XML可以实现SOAP和WSDL，一系列的ws-*规范。但是我们也可以看到JSON在缺乏规范的情况下，实际上有更大一些的灵活性，特别是近年来REST的快速发展，已经有一些schema相关的发展(例如<a href="https://spacetelescope.github.io/understanding-json-schema/index.html" target="_blank" rel="external">理解JSON Schema</a>，<a href="http://usingjsonschema.com/downloads/" target="_blank" rel="external">使用JSON Schema</a>， <a href="http://azimi.me/json-schema-view/demo/demo.html" target="_blank" rel="external">在线schema测试</a>)，也有类似于WSDL的<a href="https://www.w3.org/Submission/wadl/" target="_blank" rel="external">WADL</a>出现。</li>
+</ul>
+<a id="more"></a>
+<h2 id="3-__u5E38_u7528_u6280_u672F_u4E0E_u5DE5_u5177"><a href="#3-__u5E38_u7528_u6280_u672F_u4E0E_u5DE5_u5177" class="headerlink" title="3. 常用技术与工具"></a>3. 常用技术与工具</h2><h3 id="3-1__u76F8_u5173_u6280_u672F_u4EE5_u53CA_u4E0EXML_u7684_u5173_u7CFB"><a href="#3-1__u76F8_u5173_u6280_u672F_u4EE5_u53CA_u4E0EXML_u7684_u5173_u7CFB" class="headerlink" title="3.1 相关技术以及与XML的关系"></a>3.1 相关技术以及与XML的关系</h3><ul>
+<li>使用JSON实现RPC（类似XML-RPC）：<a href="http://www.jsonrpc.org/" target="_blank" rel="external">JSON-RPC</a></li>
+<li>使用JSON实现path查询操作（类似XML-PATH）：<a href="https://github.com/json-path/JsonPath" target="_blank" rel="external">JsonPATH</a></li>
+<li>在线查询工具：<a href="http://jsonpath.com/" target="_blank" rel="external">JsonPATH</a></li>
+</ul>
+<p>例如上面的示例json，用表达式$.Image.IDs[:1]查询，得到116：<br><img src="https://raw.githubusercontent.com/kimmking/kk/master/images/json/jsonpath.png" alt="image"></p>
+<p>我们看到JSON与XML是如此之像，实际上这两个格式可以看做一个是学院排，一个是平民派。一个对象从POJO转换成XML与JSON的过程，基本是一致的（绝大部分工作可以复用，以后有机会再详细聊这个过程），10年前我自己也做过一个基于XML的RPC（<a href="http://code.google.com/p/rpcfx/" target="_blank" rel="external">http://code.google.com/p/rpcfx/</a>，貌似已经被墙），里面实现了java和dotnet、JS的XML序列化与反序列化，同时作为一个副产品，实现了JSON序列化。</p>
+<p>后来thoughtsworks公司出品的XStream就是同时做了XML与JSON的序列化。而创建Jackson库的组织本来叫fasterxml，就是处理xml的。当然从这个角度来看，Fastjson库，稍微改改也是一个高性能的XML序列化库。<br>只是XML有着更严格的结构，更丰富的工具生态，拿查询与操作来说，XML还有XQuery、XLST等工具。处理方式上也有DOM方式与SAX流模式，这两个绝然不同的技术。</p>
+<p>单从性能来考虑，XML更是有<a href="http://vtd-xml.sourceforge.net/" target="_blank" rel="external">VTD-XML</a>这种解决了DOM消耗太大内存与SAX只能单向每个节点读一次不能随机读的缺点的高性能处理方式。</p>
+<h3 id="3-2_Java_u7C7B_u5E93"><a href="#3-2_Java_u7C7B_u5E93" class="headerlink" title="3.2 Java类库"></a>3.2 Java类库</h3><ul>
+<li><a href="https://github.com/alibaba/fastjson" target="_blank" rel="external">Fastjson</a></li>
+<li><a href="http://wiki.fasterxml.com/JacksonHome" target="_blank" rel="external">Jackson</a></li>
+<li><a href="https://github.com/google/gson" target="_blank" rel="external">Gson</a></li>
+<li><a href="http://x-stream.github.io/" target="_blank" rel="external">Xstream</a></li>
+</ul>
+<h3 id="3-3__u5DE5_u5177"><a href="#3-3__u5DE5_u5177" class="headerlink" title="3.3 工具"></a>3.3 工具</h3><ul>
+<li>格式化工具：<a href="http://jsbeautifier.org/" target="_blank" rel="external">jsbeautifier</a></li>
+<li>chrome插件：<a href="http://www.cnplugins.com/zhuanti/five-chrome-json-plugins.html" target="_blank" rel="external">5个Json View插件</a></li>
+<li>在线Mock: <a href="https://www.easy-mock.com/" target="_blank" rel="external">在线mock</a></li>
+<li>其他Mock：<a href="https://www.soapui.org/rest-testing-mocking/rest-service-mocking.html" target="_blank" rel="external">SoapUI</a>可以支持，SwaggerUI也可以，<a href="https://github.com/andrzejchm/RESTMock" target="_blank" rel="external">RestMock</a>也可以。</li>
+</ul>
+<p><img src="https://github.com/kimmking/kk/blob/master/images/json/json01.png?raw=true" alt="image"><br><img src="https://github.com/kimmking/kk/blob/master/images/json/json02.png?raw=true" alt="image"></p>
+<h2 id="4-_JSON_u7F16_u7801_u6307_u5357"><a href="#4-_JSON_u7F16_u7801_u6307_u5357" class="headerlink" title="4. JSON编码指南"></a>4. JSON编码指南</h2><h3 id="4-1_Google_JSON_u98CE_u683C_u6307_u5357"><a href="#4-1_Google_JSON_u98CE_u683C_u6307_u5357" class="headerlink" title="4.1 Google JSON风格指南"></a>4.1 Google JSON风格指南</h3><p>遵循好的设计与编码风格，能提前解决80%的问题:</p>
+<ul>
+<li>英文版<a href="https://google.github.io/styleguide/jsoncstyleguide.xml" target="_blank" rel="external">Google JSON Style Guide</a>：<a href="https://google.github.io/styleguide/jsoncstyleguide.xml" target="_blank" rel="external">https://google.github.io/styleguide/jsoncstyleguide.xml</a></li>
+<li>中文版<a href="https://github.com/darcyliu/google-styleguide/blob/master/JSONStyleGuide.md" target="_blank" rel="external">Google JSON风格指南</a>：<a href="https://github.com/darcyliu/google-styleguide/blob/master/JSONStyleGuide.md" target="_blank" rel="external">https://github.com/darcyliu/google-styleguide/blob/master/JSONStyleGuide.md</a></li>
+</ul>
+<p>简单摘录如下：</p>
+<ul>
+<li>属性名和值都是用双引号，不要把注释写到对象里面，对象数据要简洁</li>
+<li>不要随意结构化分组对象，推荐是用扁平化方式，层次不要太复杂</li>
+<li>命名方式要有意义，比如单复数表示</li>
+<li>驼峰式命名，遵循Bean规范</li>
+<li>使用版本来控制变更冲突</li>
+<li>对于一些关键字，不要拿来做key</li>
+<li>如果一个属性是可选的或者包含空值或null值，考虑从JSON中去掉该属性，除非它的存在有很强的语义原因</li>
+<li>序列化枚举类型时，使用name而不是value</li>
+<li>日期要用标准格式处理</li>
+<li>设计好通用的分页参数</li>
+<li>设计好异常处理</li>
+</ul>
+<h3 id="4-2__u4F7F_u7528JSON_u5B9E_u73B0API"><a href="#4-2__u4F7F_u7528JSON_u5B9E_u73B0API" class="headerlink" title="4.2 使用JSON实现API"></a>4.2 使用JSON实现API</h3><p><a href="http://jsonapi.org.cn/format/" target="_blank" rel="external">JSON API</a>与Google JSON风格指南有很多可以相互参照之处。</p>
+<p><a href="http://jsonapi.org.cn/format/" target="_blank" rel="external">JSON API</a>是数据交互规范，用以定义客户端如何获取与修改资源，以及服务器如何响应对应请求。</p>
+<p>JSON API设计用来最小化请求的数量，以及客户端与服务器间传输的数据量。在高效实现的同时，无需牺牲可读性、灵活性和可发现性。</p>
+<h2 id="5-_REST"><a href="#5-_REST" class="headerlink" title="5. REST"></a>5. REST</h2><p> todo list</p>
+<ul>
+<li>dubbox</li>
+<li>resteasy</li>
+<li>restlet</li>
+<li>jersey</li>
+</ul>
+<p><img src="https://github.com/kimmking/kk/blob/master/images/json/rest.jpg?raw=true" alt="image"></p>
+<h2 id="6-_SwaggerUI_u5B9E_u73B0API_u6587_u6863_u7BA1_u7406_u4E0E_u5728_u7EBF_u6D4B_u8BD5"><a href="#6-_SwaggerUI_u5B9E_u73B0API_u6587_u6863_u7BA1_u7406_u4E0E_u5728_u7EBF_u6D4B_u8BD5" class="headerlink" title="6. SwaggerUI实现API文档管理与在线测试"></a>6. SwaggerUI实现API文档管理与在线测试</h2><p> todo list</p>
+<p><img src="https://github.com/kimmking/kk/blob/master/images/json/json03.png?raw=true" alt="image"></p>
+<h2 id="7-_JSON_u4F7F_u7528_u573A_u666F_u5206_u6790"><a href="#7-_JSON_u4F7F_u7528_u573A_u666F_u5206_u6790" class="headerlink" title="7. JSON使用场景分析"></a>7. JSON使用场景分析</h2><p>JSON的使用，依据不同用途，有几个典型的场景：</p>
+<ol>
+<li>内部后台系统之间的数据传输，此种情况下基于HTTP的JSON格式其实没有优势。</li>
+<li>前后台之间的API调用，典型的是前端作为React/VUE/AngularJS/ExtJS等框架做的，前后端使用JSON交互。</li>
+</ol>
+<ul>
+<li>此时可以使用类似Dubbox之类的框架，或者原始一些SpringMVC的Controller上直接@ResponseBody或@RestController也可以。</li>
+<li>强烈建议在Dubbox之类的rest之上再加一个Nginx转发，这样一些策略的控制，比如同源的控制、简单的缓存策略、安全策略等都可以放到Nginx上来做，也利于多个机器时的负载均衡。</li>
+<li>建议使用swaggerUI来自动实现API文档和在线测试。功能很强大，操作简单，而且可以mock接口，在后台没有做好之前，前台就可以先开发了。</li>
+<li>可以使用RestUnit或SoapUI来实现自动化测试与压力测试。</li>
+</ul>
+<ol>
+<li>提供给第三方的开发接口API<br>基本同上，可以参考Google JSON风格指南与JSON API章节。</li>
+</ol>
+<h2 id="8-JSON_u7684_u4E00_u4E9B_u7ECF_u9A8C"><a href="#8-JSON_u7684_u4E00_u4E9B_u7ECF_u9A8C" class="headerlink" title="8.JSON的一些经验"></a>8.JSON的一些经验</h2><p>最近在协助处理一些Fastjson的bug问题，发现最常见的其实是大家使用的不规范性，这样碰到各种坑的可能性就很大。根据我平时使用的经验，以及总结大家常见的问题，归纳如下：</p>
+<h3 id="8-1__u9075_u5FAAJava_Beans_u89C4_u8303_u4E0EJSON_u89C4_u8303"><a href="#8-1__u9075_u5FAAJava_Beans_u89C4_u8303_u4E0EJSON_u89C4_u8303" class="headerlink" title="8.1 遵循Java Beans规范与JSON规范"></a>8.1 遵循Java Beans规范与JSON规范</h3><p>实践告诉我们：遵循beans规范和JSON规范的方式，能减少大部分的问题，比如正确实现setter、getter，用别名就加annotation。注意基本类型的匹配转换，比如在fastjson的issue见到试图把”{“a”:{}}”中的a转换成List的。</p>
+<h3 id="8-2__u4F7F_u7528_u6B63_u5E38_u7684key"><a href="#8-2__u4F7F_u7528_u6B63_u5E38_u7684key" class="headerlink" title="8.2 使用正常的key"></a>8.2 使用正常的key</h3><p>尽量不要使用数字等字符开头的key，尽量使用符合Java的class或property命名规范的key，这样会减少不必要的冲突。在jsonpath或js里，a.1可能会被解释成a[1]或a[“1”]，这些都会带来不必要的麻烦。</p>
+<h3 id="8-3__u5173_u4E8E_u65E5_u671F_u5904_u7406"><a href="#8-3__u5173_u4E8E_u65E5_u671F_u5904_u7406" class="headerlink" title="8.3 关于日期处理"></a>8.3 关于日期处理</h3><p>这一点前面的Google JSON风格指南里也提到了，尽量使用标准的日期格式。或者序列化和反序列化里都是用同样的datePattern格式。</p>
+<h3 id="8-4__u81EA_u5B9A_u4E49_u5E8F_u5217_u5316_u4E0E_u53CD_u5E8F_u5217_u5316"><a href="#8-4__u81EA_u5B9A_u4E49_u5E8F_u5217_u5316_u4E0E_u53CD_u5E8F_u5217_u5316" class="headerlink" title="8.4 自定义序列化与反序列化"></a>8.4 自定义序列化与反序列化</h3><p>对于新手来说，自定义序列化是一切罪恶的根源。</p>
+<p>尽量不要使用自定义序列化，除非万不得已，优先考虑使用注解过滤，别名等方式，甚至是重新建一个VO类来组装实际需要的属性。使用自定义序列化时一切要小心，因为这样会导致两个问题：</p>
+<ul>
+<li>改变了pojo &lt;-&gt; jsonstring 的自然对应关系，从而不利于阅读代码和排查问题，你改变的关系无法简单的从bean和json上看出来了；</li>
+<li>反序列化可能出错，因为对应不上原来的属性了。</li>
+</ul>
+<p>如果只是序列化发出去（响应）的是JSON数据、传过来（请求）的数据格式跟JSON无关或者是标准的，此时自定义序列化就无所谓了，反正是要接收方来处理。</p>
+<h3 id="8-5_JSONObject_u7684_u4F7F_u7528"><a href="#8-5_JSONObject_u7684_u4F7F_u7528" class="headerlink" title="8.5 JSONObject的使用"></a>8.5 JSONObject的使用</h3><p>JSONObject是JSON字符串与pojo对象转换过程中的中间表达类型，实现了Map接口，可以看做是一个模拟JSON对象键值对再加上多层嵌套的数据集合，对象的每一个基本类型属性是map里的一个key-value，一个非基本类型属性是一个嵌套的JSONObject对象（key是属性名称，value是表示这个属性值的对象的JSONObject）。如果以前用过apache beanutils里的DynamicBean之类的，就知道JSONObject也是一种动态描述Bean的实现，相当于是拆解了Bean本身的结构与数据。这时候由于JSONObject里可能会没有记录全部的Bean类型数据，例如泛型的具体子类型之类的元数据，如果JSONObject与正常的POJO混用，出现问题的概率较高。<br>下列方式尽量不要使用：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestBean</span></span>&#123;</span><br><span class="line">    <span class="annotation">@Setter</span> <span class="annotation">@Getter</span></span><br><span class="line">    <span class="keyword">private</span> TestBean1 testBean1;</span><br><span class="line">    </span><br><span class="line">    <span class="annotation">@Setter</span> <span class="annotation">@Getter</span></span><br><span class="line">    <span class="keyword">private</span> JSONObject testBean2; <span class="comment">// 尽量不要在POJO里用JSONObject</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line">应该从设计上改为都用POJO比较合适:</span><br><span class="line"></span><br><span class="line">```java</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestBean</span></span>&#123;</span><br><span class="line">    <span class="annotation">@Setter</span> <span class="annotation">@Getter</span></span><br><span class="line">    <span class="keyword">private</span> TestBean1 testBean1;</span><br><span class="line">    </span><br><span class="line">    <span class="annotation">@Setter</span> <span class="annotation">@Getter</span></span><br><span class="line">    <span class="keyword">private</span> TestBean2 testBean2;; <span class="comment">// 使用POJO</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line">相对的，写一些临时性的测试代码，demo代码，可以直接全部用JSONObject先快速run起来。</span><br><span class="line"></span><br><span class="line">同理，jsonstring中嵌套jsonstring也尽量不要用，例如：</span><br><span class="line"></span><br><span class="line">```javascript</span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">"name"</span>:<span class="string">"zhangsan"</span>,</span><br><span class="line">    <span class="string">"score"</span>:<span class="string">"&#123;\"math\":78,\"history\":82&#125;"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>应该改为全部都是JSON风格的结构：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">"name"</span>:<span class="string">"zhangsan"</span>,</span><br><span class="line">    <span class="string">"score"</span>:&#123;</span><br><span class="line">        <span class="string">"math"</span>:<span class="number">78</span>,</span><br><span class="line">        <span class="string">"history"</span>:<span class="number">82</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>另外，对于jsonstring转POJO（或POJO转jsonstring），尽量使用直接转的方式，而不是先转成JSONObject过渡的方式。特别是对于Fastjson，由于性能优化的考虑，这两个执行的代码是不一样的，可能导致不一样的结果。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">String jsonstring = <span class="string">"&#123;\"a\":12&#125;"</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 不推荐这种方式</span></span><br><span class="line"><span class="comment">// 除非这里需要对jsonObject做一些简单处理</span></span><br><span class="line">JSONObject jsonObject = JSON.parseObject(jsonstring);</span><br><span class="line">A a = jsonObject.toJavaObject(A.class);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 推荐方式</span></span><br><span class="line">A a = JSON.parseObject(jsonstring, A.class);</span><br></pre></td></tr></table></figure>
+<h3 id="8-6_Hibernate_u76F8_u5173_u95EE_u9898"><a href="#8-6_Hibernate_u76F8_u5173_u95EE_u9898" class="headerlink" title="8.6 Hibernate相关问题"></a>8.6 Hibernate相关问题</h3><p>懒加载与级联，可能导致出现问题，例如hibernate，建议封装一层VO类型来序列化。使用VO类还有一个好处，就是可以去掉一些没用的属性，减少数据量，同时可以加上额外的属性。</p>
+<h3 id="8-7__u6DF1_u5C42_u5D4C_u5957_u4E0E_u6CDB_u578B_u95EE_u9898"><a href="#8-7__u6DF1_u5C42_u5D4C_u5957_u4E0E_u6CDB_u578B_u95EE_u9898" class="headerlink" title="8.7 深层嵌套与泛型问题"></a>8.7 深层嵌套与泛型问题</h3><p>尽量不要在使用过多的层次嵌套的同时使用泛型（List、Map等），可能导致类型丢失，而且问题比较难查。</p>
+<h3 id="8-8__u62BD_u8C61_u7C7B_u578B_u4E0E_u5B50_u7C7B_u578B_u95EE_u9898"><a href="#8-8__u62BD_u8C61_u7C7B_u578B_u4E0E_u5B50_u7C7B_u578B_u95EE_u9898" class="headerlink" title="8.8 抽象类型与子类型问题"></a>8.8 抽象类型与子类型问题</h3><p>尽量不要在同一个Bean的层次结构里使用多个子类型对象，可能导致类型丢失，而且问题比较难查。当然我们可以通过代码显示的传递各种正确的类型，但是这样做引入了更多的不确定性。良好的做法应该是一开始设计时就避免出现这些问题。</p>
+<h3 id="8-9__u907F_u514D_u5FAA_u73AF_u5F15_u7528"><a href="#8-9__u907F_u514D_u5FAA_u73AF_u5F15_u7528" class="headerlink" title="8.9 避免循环引用"></a>8.9 避免循环引用</h3><p>尽量避免循环引用，这个虽然可以通过序列化特性禁掉，但是如果能避免则避免。</p>
+<h3 id="8-10__u6CE8_u610F_u7F16_u7801_u548C_u4E0D_u53EF_u89C1_u5B57_u7B26"><a href="#8-10__u6CE8_u610F_u7F16_u7801_u548C_u4E0D_u53EF_u89C1_u5B57_u7B26" class="headerlink" title="8.10 注意编码和不可见字符"></a>8.10 注意编码和不可见字符</h3><p>对于InputStream、OutputStream的处理，有时候会报一些奇怪的错误，not match之类的，这时候也许我们看日志里的json字符串可能很正常，但就是出错。</p>
+<p>这时可能就是编码的问题了，可能是导致字符错乱，也可能是因为UTF-8文件的BOM头，这些潜在的问题可能在二进制数据转文本的时候，因为一些不可见字符无法显示，导致日志看起来只有正常字符而是正确的，问题很难排查。</p>
+<p>处理办法就是按二进制的方式把Stream保存起来，然后按hex方式查看，看看是否有多余字符，或者其他错误。</p>
+<h2 id="9-fastjson_u7684_u6700_u4F73_u5B9E_u8DF5"><a href="#9-fastjson_u7684_u6700_u4F73_u5B9E_u8DF5" class="headerlink" title="9.fastjson的最佳实践"></a>9.fastjson的最佳实践</h2><h3 id="9-1_Maven_u4E0B_u5F15_u5165Fastjson"><a href="#9-1_Maven_u4E0B_u5F15_u5165Fastjson" class="headerlink" title="9.1 Maven下引入Fastjson"></a>9.1 Maven下引入Fastjson</h3><p>pom.xml文件里添加依赖即可：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">groupId</span>&gt;</span>com.alibaba<span class="tag">&lt;/<span class="title">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">artifactId</span>&gt;</span>fastjson<span class="tag">&lt;/<span class="title">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">version</span>&gt;</span>1.2.32<span class="tag">&lt;/<span class="title">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="9-2__u5E8F_u5217_u5316_u4E00_u4E2A_u5BF9_u8C61_u6210JSON_u5B57_u7B26_u4E32"><a href="#9-2__u5E8F_u5217_u5316_u4E00_u4E2A_u5BF9_u8C61_u6210JSON_u5B57_u7B26_u4E32" class="headerlink" title="9.2 序列化一个对象成JSON字符串"></a>9.2 序列化一个对象成JSON字符串</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">User user = <span class="keyword">new</span> User();</span><br><span class="line">user.setName(<span class="string">"校长"</span>);</span><br><span class="line">user.setAge(<span class="number">3</span>);</span><br><span class="line">user.setSalary(<span class="keyword">new</span> BigDecimal(<span class="string">"123456789.0123"</span>));</span><br><span class="line">String jsonString = JSON.toJSONString(user);</span><br><span class="line">System.out.println(jsonString);</span><br><span class="line"><span class="comment">// 输出 &#123;"age":3,"name":"校长","old":false,"salary":123456789.0123&#125;</span></span><br></pre></td></tr></table></figure>
+<h3 id="9-3__u53CD_u5E8F_u5217_u5316_u4E00_u4E2AJSON_u5B57_u7B26_u4E32_u6210Java_u5BF9_u8C61"><a href="#9-3__u53CD_u5E8F_u5217_u5316_u4E00_u4E2AJSON_u5B57_u7B26_u4E32_u6210Java_u5BF9_u8C61" class="headerlink" title="9.3 反序列化一个JSON字符串成Java对象"></a>9.3 反序列化一个JSON字符串成Java对象</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"> String jsonString = <span class="string">"&#123;\"age\":3,\"birthdate\":1496738822842,\"name\":\"校长\",\"old\":true,\"salary\":123456789.0123&#125;"</span>;</span><br><span class="line"> User u = JSON.parseObject(jsonString ,User.class);</span><br><span class="line"> System.out.println(u.getName());</span><br><span class="line"> <span class="comment">// 输出 校长</span></span><br><span class="line"></span><br><span class="line">String jsonStringArray = <span class="string">"[&#123;\"age\":3,\"birthdate\":1496738822842,\"name\":\"校长\",\"old\":true,\"salary\":123456789.0123&#125;]"</span>;</span><br><span class="line">List&lt;User&gt; userList = JSON.parseArray(jsonStringArray, User.class);</span><br><span class="line">System.out.println(userList.size());</span><br><span class="line"><span class="comment">// 输出 1</span></span><br></pre></td></tr></table></figure>
+<h3 id="9-4__u65E5_u671F_u683C_u5F0F_u5904_u7406"><a href="#9-4__u65E5_u671F_u683C_u5F0F_u5904_u7406" class="headerlink" title="9.4 日期格式处理"></a>9.4 日期格式处理</h3><p>Fastjson能识别下面这么多种日期格式的字符串：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> String            defaultPatttern    = <span class="string">"yyyy-MM-dd HH:mm:ss"</span>;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> DateTimeFormatter defaultFormatter   = DateTimeFormatter.ofPattern(defaultPatttern);</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> DateTimeFormatter formatter_dt19_tw  = DateTimeFormatter.ofPattern(<span class="string">"yyyy/MM/dd HH:mm:ss"</span>);</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> DateTimeFormatter formatter_dt19_cn  = DateTimeFormatter.ofPattern(<span class="string">"yyyy年M月d日 HH:mm:ss"</span>);</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> DateTimeFormatter formatter_dt19_cn_1  = DateTimeFormatter.ofPattern(<span class="string">"yyyy年M月d日 H时m分s秒"</span>);</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> DateTimeFormatter formatter_dt19_kr  = DateTimeFormatter.ofPattern(<span class="string">"yyyy년M월d일 HH:mm:ss"</span>);</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> DateTimeFormatter formatter_dt19_us  = DateTimeFormatter.ofPattern(<span class="string">"MM/dd/yyyy HH:mm:ss"</span>);</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> DateTimeFormatter formatter_dt19_eur = DateTimeFormatter.ofPattern(<span class="string">"dd/MM/yyyy HH:mm:ss"</span>);</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> DateTimeFormatter formatter_dt19_de  = DateTimeFormatter.ofPattern(<span class="string">"dd.MM.yyyy HH:mm:ss"</span>);</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> DateTimeFormatter formatter_dt19_in  = DateTimeFormatter.ofPattern(<span class="string">"dd-MM-yyyy HH:mm:ss"</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> DateTimeFormatter formatter_d8       = DateTimeFormatter.ofPattern(<span class="string">"yyyyMMdd"</span>);</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> DateTimeFormatter formatter_d10_tw   = DateTimeFormatter.ofPattern(<span class="string">"yyyy/MM/dd"</span>);</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> DateTimeFormatter formatter_d10_cn   = DateTimeFormatter.ofPattern(<span class="string">"yyyy年M月d日"</span>);</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> DateTimeFormatter formatter_d10_kr   = DateTimeFormatter.ofPattern(<span class="string">"yyyy년M월d일"</span>);</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> DateTimeFormatter formatter_d10_us   = DateTimeFormatter.ofPattern(<span class="string">"MM/dd/yyyy"</span>);</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> DateTimeFormatter formatter_d10_eur  = DateTimeFormatter.ofPattern(<span class="string">"dd/MM/yyyy"</span>);</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> DateTimeFormatter formatter_d10_de   = DateTimeFormatter.ofPattern(<span class="string">"dd.MM.yyyy"</span>);</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> DateTimeFormatter formatter_d10_in   = DateTimeFormatter.ofPattern(<span class="string">"dd-MM-yyyy"</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> DateTimeFormatter ISO_FIXED_FORMAT =</span><br><span class="line">        DateTimeFormatter.ofPattern(<span class="string">"yyyy-MM-dd HH:mm:ss"</span>).withZone(ZoneId.systemDefault());</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> String formatter_iso8601_pattern     = <span class="string">"yyyy-MM-dd'T'HH:mm:ss"</span>;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> DateTimeFormatter formatter_iso8601  = DateTimeFormatter.ofPattern(formatter_iso8601_pattern);</span><br></pre></td></tr></table></figure>
+<p>默认序列化Date输出使用”yyyy-MM-dd HH:mm:ss”格式，可以用UseISO8601DateFormat特性换成”yyyy-MM-dd’T’HH:mm:ss”格式。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">JSON.defaultTimeZone = TimeZone.getTimeZone(<span class="string">"Asia/Shanghai"</span>);</span><br><span class="line">JSON.defaultLocale = Locale.US;</span><br><span class="line">        </span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Model</span> </span>&#123;</span><br><span class="line">        <span class="annotation">@JSONField</span>(format = <span class="string">"MMM dd, yyyy h:mm:ss aa"</span>)</span><br><span class="line">        <span class="keyword">private</span> java.util.Date date;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> java.util.<span class="function">Date <span class="title">getDate</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> date;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setDate</span><span class="params">(java.util.Date date)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.date = date;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="annotation">@JSONField</span>(format = <span class="string">"MMM-dd-yyyy h:mm:ss aa"</span>)</span><br><span class="line">        <span class="keyword">public</span> java.sql.Date date2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="9-5__u5E38_u89C1_u5E8F_u5217_u5316_u7279_u6027_u7684_u4F7F_u7528"><a href="#9-5__u5E38_u89C1_u5E8F_u5217_u5316_u7279_u6027_u7684_u4F7F_u7528" class="headerlink" title="9.5 常见序列化特性的使用"></a>9.5 常见序列化特性的使用</h3><p>Fastjson的序列化特性定义在枚举类com\alibaba\fastjson\serializer\SerializerFeature.java中，目前正好有30项。<br>可以通过设置多个特性到FastjsonConfig中全局使用，也可以在某个具体的JSON.writeJSONString时作为参数使用。</p>
+<ol>
+<li>QuoteFieldNames, //key使用引号</li>
+<li>UseSingleQuotes, //使用单引号</li>
+<li>WriteMapNullValue, //输出Map的null值</li>
+<li>WriteEnumUsingToString, //枚举属性输出toString的结果</li>
+<li>WriteEnumUsingName, //枚举数据输出name</li>
+<li>UseISO8601DateFormat, //使用日期格式</li>
+<li>WriteNullListAsEmpty, //List为空则输出[]</li>
+<li>WriteNullStringAsEmpty, //String为空则输出””</li>
+<li>WriteNullNumberAsZero, //Number类型为空则输出0</li>
+<li>WriteNullBooleanAsFalse, //Boolean类型为空则输出false</li>
+<li>SkipTransientField,</li>
+<li>SortField, //排序字段</li>
+<li>WriteTabAsSpecial,</li>
+<li>PrettyFormat, // 格式化JSON缩进</li>
+<li>WriteClassName, // 输出类名</li>
+<li>DisableCircularReferenceDetect, // 禁止循环引用</li>
+<li>WriteSlashAsSpecial, // 对斜杠’/’进行转义</li>
+<li>BrowserCompatible,</li>
+<li>WriteDateUseDateFormat, // 全局修改日期格式,默认为false。JSON.DEFFAULT_DATE_FORMAT = “yyyy-MM-dd”;JSON.toJSONString(obj, SerializerFeature.WriteDateUseDateFormat);</li>
+<li>NotWriteRootClassName,</li>
+<li>DisableCheckSpecialChar,</li>
+<li>BeanToArray,</li>
+<li>WriteNonStringKeyAsString,</li>
+<li>NotWriteDefaultValue,</li>
+<li>BrowserSecure,</li>
+<li>IgnoreNonFieldGetter,</li>
+<li>WriteNonStringValueAsString,</li>
+<li>IgnoreErrorGetter,</li>
+<li>WriteBigDecimalAsPlain,</li>
+<li>MapSortField</li>
+</ol>
+<p>使用示例如下（可以<a href="http://blog.csdn.net/u010246789/article/details/52539576" target="_blank" rel="external">参见此处</a>）：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Word word = <span class="keyword">new</span> Word();</span><br><span class="line">word.setA(<span class="string">"a"</span>);</span><br><span class="line">word.setB(<span class="number">2</span>);</span><br><span class="line">word.setC(<span class="keyword">true</span>);</span><br><span class="line">word.setD(<span class="string">"d"</span>);</span><br><span class="line">word.setE(<span class="string">""</span>);</span><br><span class="line">word.setF(<span class="keyword">null</span>);</span><br><span class="line">word.setDate(<span class="keyword">new</span> Date());</span><br><span class="line"></span><br><span class="line">System.out.println(JSON.toJSONString(word));</span><br><span class="line">System.out.println(JSON.toJSONString(word, SerializerFeature.PrettyFormat,</span><br><span class="line">    SerializerFeature.WriteMapNullValue, SerializerFeature.WriteNullStringAsEmpty,</span><br><span class="line">    SerializerFeature.DisableCircularReferenceDetect,</span><br><span class="line">    SerializerFeature.WriteNullListAsEmpty));</span><br></pre></td></tr></table></figure>
+<h3 id="9-6_Annotation_u6CE8_u89E3_u7684_u4F7F_u7528"><a href="#9-6_Annotation_u6CE8_u89E3_u7684_u4F7F_u7528" class="headerlink" title="9.6 Annotation注解的使用"></a>9.6 Annotation注解的使用</h3><p>1) JSONField</p>
+<p>可以配置在属性（setter、getter）和字段（必须是public field）上。<br>详情参见此处：<a href="https://github.com/alibaba/fastjson/wiki/JSONField" target="_blank" rel="external">JSONField用法</a></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.alibaba.fastjson.annotation;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="annotation">@interface</span> JSONField &#123;</span><br><span class="line">    <span class="comment">// 配置序列化和反序列化的顺序，1.1.42版本之后才支持</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">ordinal</span><span class="params">()</span> <span class="keyword">default</span> 0</span>;</span><br><span class="line"></span><br><span class="line">     <span class="comment">// 指定字段的名称</span></span><br><span class="line">    <span class="function">String <span class="title">name</span><span class="params">()</span> <span class="keyword">default</span> ""</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 指定字段的格式，对日期格式有用</span></span><br><span class="line">    <span class="function">String <span class="title">format</span><span class="params">()</span> <span class="keyword">default</span> ""</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 是否序列化</span></span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">serialize</span><span class="params">()</span> <span class="keyword">default</span> <span class="keyword">true</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 是否反序列化</span></span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">deserialize</span><span class="params">()</span> <span class="keyword">default</span> <span class="keyword">true</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">@JSONField</span>(name=<span class="string">"ID"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getId</span><span class="params">()</span> </span>&#123;<span class="keyword">return</span> id;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 配置date序列化和反序列使用yyyyMMdd日期格式</span></span><br><span class="line"><span class="annotation">@JSONField</span>(format=<span class="string">"yyyyMMdd"</span>)</span><br><span class="line"><span class="keyword">public</span> Date date1;  </span><br><span class="line"></span><br><span class="line"> <span class="comment">// 不序列化</span></span><br><span class="line"> <span class="annotation">@JSONField</span>(serialize=<span class="keyword">false</span>)</span><br><span class="line"> <span class="keyword">public</span> Date date2;</span><br><span class="line"></span><br><span class="line"> <span class="comment">// 不反序列化</span></span><br><span class="line"> <span class="annotation">@JSONField</span>(deserialize=<span class="keyword">false</span>)</span><br><span class="line"> <span class="keyword">public</span> Date date3;</span><br><span class="line"></span><br><span class="line"> <span class="comment">// 按ordinal排序</span></span><br><span class="line"> <span class="annotation">@JSONField</span>(ordinal = <span class="number">2</span>)</span><br><span class="line"> <span class="keyword">private</span> <span class="keyword">int</span> f1;</span><br><span class="line"></span><br><span class="line"> <span class="annotation">@JSONField</span>(ordinal = <span class="number">1</span>)</span><br><span class="line"> <span class="keyword">private</span> <span class="keyword">int</span> f2;</span><br></pre></td></tr></table></figure>
+<p>2) JSONType</p>
+<ul>
+<li>自定义序列化：<a href="https://github.com/alibaba/fastjson/wiki/JSONType_serializer" target="_blank" rel="external">ObjectSerializer</a></li>
+<li>子类型处理：<a href="https://github.com/alibaba/fastjson/wiki/JSONType_seeAlso_cn" target="_blank" rel="external">SeeAlso</a></li>
+<li>JSONType.alphabetic属性: fastjson缺省时会使用字母序序列化，如果你是希望按照java fields/getters的自然顺序序列化，可以配置JSONType.alphabetic，使用方法如下：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">@JSONType</span>(alphabetic = <span class="keyword">false</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">B</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> f2;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> f1;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> f0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="9-7__u81EA_u5B9A_u4E49_u5E8F_u5217_u5316_u4E0E_u53CD_u5E8F_u5217_u5316"><a href="#9-7__u81EA_u5B9A_u4E49_u5E8F_u5217_u5316_u4E0E_u53CD_u5E8F_u5217_u5316" class="headerlink" title="9.7 自定义序列化与反序列化"></a>9.7 自定义序列化与反序列化</h3><ul>
+<li>自定义序列化</li>
+</ul>
+<p>只需要2步：<a href="https://github.com/alibaba/fastjson/wiki/ObjectSerializer_cn" target="_blank" rel="external">参见此处</a></p>
+<p>1)实现ObjectSerializer</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CharacterSerializer</span> <span class="keyword">implements</span> <span class="title">ObjectSerializer</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">write</span><span class="params">(JSONSerializer serializer, </span><br><span class="line">                      Object object, </span><br><span class="line">                      Object fieldName, </span><br><span class="line">                      Type fieldType, </span><br><span class="line">                      <span class="keyword">int</span> features)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        SerializeWriter out = serializer.out;</span><br><span class="line">    </span><br><span class="line">        Character value = (Character) object;</span><br><span class="line">        <span class="keyword">if</span> (value == <span class="keyword">null</span>) &#123;</span><br><span class="line">            out.writeString(<span class="string">""</span>);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    </span><br><span class="line">        <span class="keyword">char</span> c = value.charValue();</span><br><span class="line">        <span class="keyword">if</span> (c == <span class="number">0</span>) &#123;</span><br><span class="line">            out.writeString(<span class="string">"\u0000"</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            out.writeString(value.toString());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>2)注册ObjectSerializer</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SerializeConfig.getGlobalInstance().put(Character.class, <span class="keyword">new</span> CharacterSerializer());</span><br></pre></td></tr></table></figure>
+<ul>
+<li>自定义反序列化</li>
+</ul>
+<p>只需要2步：<a href="https://github.com/alibaba/fastjson/wiki/ObjectDeserializer_cn" target="_blank" rel="external">参见此处</a></p>
+<p>1)自定义实现ObjectDeserializer</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">enum</span> OrderActionEnum &#123;</span><br><span class="line">                                    FAIL(<span class="number">1</span>), SUCC(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> code;</span><br><span class="line"></span><br><span class="line">    OrderActionEnum(<span class="keyword">int</span> code)&#123;</span><br><span class="line">        <span class="keyword">this</span>.code = code;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Msg</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> OrderActionEnum actionEnum;</span><br><span class="line">    <span class="keyword">public</span> String          body;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">OrderActionEnumDeser</span> <span class="keyword">implements</span> <span class="title">ObjectDeserializer</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="keyword">public</span> &lt;T&gt; <span class="function">T <span class="title">deserialze</span><span class="params">(DefaultJSONParser parser, Type type, Object fieldName)</span> </span>&#123;</span><br><span class="line">        Integer intValue = parser.parseObject(<span class="keyword">int</span>.class);</span><br><span class="line">        <span class="keyword">if</span> (intValue == <span class="number">1</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> (T) OrderActionEnum.FAIL;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (intValue == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> (T) OrderActionEnum.SUCC;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getFastMatchToken</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> JSONToken.LITERAL_INT;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>2)注册并使用ObjectDeserializer</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">ParserConfig.getGlobalInstance().putDeserializer(OrderActionEnum.class, <span class="keyword">new</span> OrderActionEnumDeser());</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">    Msg msg = JSON.parseObject(<span class="string">"&#123;\"actionEnum\":1,\"body\":\"A\"&#125;"</span>, Msg.class);</span><br><span class="line">    Assert.assertEquals(msg.body, <span class="string">"A"</span>);</span><br><span class="line">    Assert.assertEquals(msg.actionEnum, OrderActionEnum.FAIL);</span><br><span class="line">&#125;</span><br><span class="line">&#123;</span><br><span class="line">    Msg msg = JSON.parseObject(<span class="string">"&#123;\"actionEnum\":0,\"body\":\"B\"&#125;"</span>, Msg.class);</span><br><span class="line">    Assert.assertEquals(msg.body, <span class="string">"B"</span>);</span><br><span class="line">    Assert.assertEquals(msg.actionEnum, OrderActionEnum.SUCC);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="9-8__u81EA_u5B9A_u4E49_u5E8F_u5217_u5316_u4E4B_u8FC7_u6EE4_u5668"><a href="#9-8__u81EA_u5B9A_u4E49_u5E8F_u5217_u5316_u4E4B_u8FC7_u6EE4_u5668" class="headerlink" title="9.8 自定义序列化之过滤器"></a>9.8 自定义序列化之过滤器</h3><ul>
+<li>全局的过滤器：JSON.toJSONString方法的参数中可以配置处理所有类型的SerializeFilter</li>
+<li>类级别过滤器：<a href="https://github.com/alibaba/fastjson/wiki/Class_Level_SerializeFilter" target="_blank" rel="external">Class_Level_SerializeFilter</a></li>
+<li>属性过滤器：<a href="https://github.com/alibaba/fastjson/wiki/%E4%BD%BF%E7%94%A8SimplePropertyPreFilter%E8%BF%87%E6%BB%A4%E5%B1%9E%E6%80%A7" target="_blank" rel="external">使用PropertyPreFilter过滤属性</a></li>
+<li>多余字段处理器：<a href="https://github.com/alibaba/fastjson/wiki/ParseProcess" target="_blank" rel="external">ExtraProcessor 用于处理多余的字段、<br>ExtraTypeProvider用于处理多余字段时提供类型信息</a></li>
+<li>定制反序列化：<a href="https://github.com/alibaba/fastjson/wiki/ExtraProcessable" target="_blank" rel="external">在fastjson-1.2.9版本后提供了ExtraProcessable接口，用于定制对象的反序列化功能</a>，可用于添加没有的字段</li>
+<li>标签过滤：<a href="https://github.com/alibaba/fastjson/wiki/LabelFilter" target="_blank" rel="external">JSONField(label)，相当于分组</a></li>
+<li>自动识别嵌套对象子类型：<a href="https://github.com/alibaba/fastjson/wiki/FieldTypeResolver" target="_blank" rel="external">FieldTypeResolver</a></li>
+</ul>
+<h3 id="9-9__u4E0ESpring_MVC_u7684_u914D_u5408_u4F7F_u7528"><a href="#9-9__u4E0ESpring_MVC_u7684_u914D_u5408_u4F7F_u7528" class="headerlink" title="9.9 与Spring MVC的配合使用"></a>9.9 与Spring MVC的配合使用</h3><p>FastJson 提供了Spring MVC HttpMessageConverter的实现，将POJO输出为JSONP，支持跨域数据访问。</p>
+<p>FastJsonpHttpMessageConverter4 for Spring MVC 4.2+：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">mvc:annotation-driven</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">mvc:message-converters</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">bean</span></span><br><span class="line">            <span class="attribute">class</span>=<span class="value">"com.alibaba.fastjson.support.spring.FastJsonpHttpMessageConverter4"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="title">property</span> <span class="attribute">name</span>=<span class="value">"supportedMediaTypes"</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="title">list</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="title">value</span>&gt;</span>application/json;charset=UTF-8<span class="tag">&lt;/<span class="title">value</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="title">list</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="title">property</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="title">bean</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="title">mvc:message-converters</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">mvc:annotation-driven</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="title">mvc:default-servlet-handler</span> /&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="title">bean</span> <span class="attribute">id</span>=<span class="value">"fastJsonpResponseBodyAdvice"</span> <span class="attribute">class</span>=<span class="value">"com.alibaba.fastjson.support.spring.FastJsonpResponseBodyAdvice"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">constructor-arg</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">list</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="title">value</span>&gt;</span>callback<span class="tag">&lt;/<span class="title">value</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="title">value</span>&gt;</span>jsonp<span class="tag">&lt;/<span class="title">value</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="title">list</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="title">constructor-arg</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><a href="https://github.com/alibaba/fastjson/wiki/FastJsonpHttpMessageConverter4_CN" target="_blank" rel="external">详细配置参见此处</a></p>
+<h3 id="9-10__u4E0ESpring_Boot_u7684_u96C6_u6210_u4F7F_u7528"><a href="#9-10__u4E0ESpring_Boot_u7684_u96C6_u6210_u4F7F_u7528" class="headerlink" title="9.10 与Spring Boot的集成使用"></a>9.10 与Spring Boot的集成使用</h3><p>参见此处：<a href="https://github.com/storezhang/utils/tree/master/spring-boot-starter-fastjson" target="_blank" rel="external">spring-boot-starter-fastjson</a></p>
+<h3 id="9-11__u6CDB_u578B_u5904_u7406"><a href="#9-11__u6CDB_u578B_u5904_u7406" class="headerlink" title="9.11 泛型处理"></a>9.11 泛型处理</h3><p><a href="https://github.com/alibaba/fastjson/wiki/Typ" target="_blank" rel="external">在fastjson中提供了一个用于处理泛型反序列化的类TypeReference</a>eReference</p>
+<h3 id="9-12jaxrs_u652F_u6301"><a href="#9-12jaxrs_u652F_u6301" class="headerlink" title="9.12jaxrs支持"></a>9.12jaxrs支持</h3><p>FastJson 提供了JAX-RS Provider的实现 <a href="https://github.com/alibaba/fastjson/wiki/FastJsonProvider_CN" target="_blank" rel="external">FastJsonProvider</a></p>
+<p>可用于在构建Restful服务时使用FastJson进行数据的Serialize and Deserialize</p>
+<h3 id="9-13_swagger_u652F_u6301"><a href="#9-13_swagger_u652F_u6301" class="headerlink" title="9.13 swagger支持"></a>9.13 swagger支持</h3><p><a href="https://github.com/alibaba/fastjson/pull/716" target="_blank" rel="external">增加对swagger的支持</a><br><a href="https://github.com/kimmking/kk/blob/master/technotes/dubbo-integration-swagger.md" target="_blank" rel="external">dubbox与swagger的集成</a></p>
+<h3 id="9-14__u9ED8_u8BA4_u53C2_u6570_u914D_u7F6E"><a href="#9-14__u9ED8_u8BA4_u53C2_u6570_u914D_u7F6E" class="headerlink" title="9.14 默认参数配置"></a>9.14 默认参数配置</h3><p>1）序列化</p>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">public static int <span class="constant">DEFAULT_GENERATE_FEATURE</span>;</span><br><span class="line">  static &#123;</span><br><span class="line">      int features = <span class="number">0</span>;</span><br><span class="line">        features |= <span class="constant">SerializerFeature</span>.<span class="constant">QuoteFieldNames</span>.getMask(); <span class="regexp">//</span> key用引号引起来</span><br><span class="line">        features |= <span class="constant">SerializerFeature</span>.<span class="constant">SkipTransientField</span>.getMask(); <span class="regexp">//</span> 忽略transient</span><br><span class="line">        features |= <span class="constant">SerializerFeature</span>.<span class="constant">WriteEnumUsingName</span>.getMask(); <span class="regexp">//</span> <span class="class"><span class="keyword">enum</span>输出<span class="title">name</span></span></span><br><span class="line">        features |= <span class="constant">SerializerFeature</span>.<span class="constant">SortField</span>.getMask();          <span class="regexp">//</span> 字段排序</span><br><span class="line"></span><br><span class="line">      &#123;</span><br><span class="line">          <span class="constant">String</span> featuresProperty = <span class="constant">IOUtils</span>.getStringProperty(<span class="string">"fastjson.serializerFeatures.MapSortField"</span>);</span><br><span class="line">          int mask = <span class="constant">SerializerFeature</span>.<span class="constant">MapSortField</span>.getMask();</span><br><span class="line">          <span class="keyword">if</span> (<span class="string">"true"</span>.equals(featuresProperty)) &#123;</span><br><span class="line">              features |= mask;</span><br><span class="line">          &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="string">"false"</span>.equals(featuresProperty)) &#123;</span><br><span class="line">              features &amp;= ~mask;</span><br><span class="line">          &#125;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="constant">DEFAULT_GENERATE_FEATURE</span> = features;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>2）反序列化</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> &#123;</span><br><span class="line">        <span class="keyword">int</span> features = <span class="number">0</span>;</span><br><span class="line">        features |= Feature.AutoCloseSource.getMask();<span class="comment">//检查json格式</span></span><br><span class="line">        features |= Feature.InternFieldNames.getMask();<span class="comment">//</span></span><br><span class="line">        features |= Feature.UseBigDecimal.getMask(); <span class="comment">//数值使用BigDecimal</span></span><br><span class="line">        features |= Feature.AllowUnQuotedFieldNames.getMask();<span class="comment">//支持key不用引号引起来</span></span><br><span class="line">        features |= Feature.AllowSingleQuotes.getMask();<span class="comment">//支持单引号</span></span><br><span class="line">        features |= Feature.AllowArbitraryCommas.getMask();<span class="comment">//支持连续多个逗号</span></span><br><span class="line">        features |= Feature.SortFeidFastMatch.getMask();<span class="comment">//排序后快速匹配</span></span><br><span class="line">        features |= Feature.IgnoreNotMatch.getMask();<span class="comment">//忽略不匹配的属性和字段</span></span><br><span class="line">        DEFAULT_PARSER_FEATURE = features;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>更多功能 todo list</p>
+<h2 id="10-Fastjson_u7684_u8BBE_u8BA1_u8BF4_u660E"><a href="#10-Fastjson_u7684_u8BBE_u8BA1_u8BF4_u660E" class="headerlink" title="10.Fastjson的设计说明"></a>10.Fastjson的设计说明</h2><p>todo list</p>
+<ol>
+<li>为什么fastjson这么快：<a href="http://wenshao.iteye.com/blog/1142031/" target="_blank" rel="external">fastjson内幕</a></li>
+<li>代码是怎么样的：<a href="http://blog.csdn.net/swust_chenpeng/article/details/19617561" target="_blank" rel="external">源码分析</a></li>
+<li>fastjson里的各种对象：<a href="http://www.csdn.net/article/2014-09-25/2821866" target="_blank" rel="external">概念分析</a></li>
+<li>fastjson与安全：<a href="http://blog.nsfocus.net/analysis-protection-fastjson-remote-code-execution-vulnerability/" target="_blank" rel="external">fastjson远程代码执行漏洞技术分析与防护方案</a>，建议直接升级到1.2.28/1.2.29或者更新版本来保证系统安全</li>
+<li><a href="http://wenshao.iteye.com/blog/1146897" target="_blank" rel="external">json ref方式的讨论</a></li>
+<li>fastjson为什么这么有保障，答案是有3837个testcase： mvn test =&gt; Tests run: 3837, Failures: 0, Errors: 0, Skipped: 0</li>
+</ol>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/json/">json</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://kimmking.github.io/2017/06/06/json-best-practice/" data-title="JSON最佳实践 | kimmking&#39;s blog" data-tsina="1830159777" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2017/06/13/dubbox-integration-swagger/" title="dubbox与swagger集成">
+  <strong>上一篇：</strong><br/>
+  <span>
+  dubbox与swagger集成</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2017/05/25/oracle2mysql01/"  title="企业应用系统由oracle迁移到mysql数据库">
+ <strong>下一篇：</strong><br/> 
+ <span>企业应用系统由oracle迁移到mysql数据库
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section id="comments" class="comment">
+	<div class="ds-thread" data-thread-key="2017/06/06/json-best-practice/" data-title="JSON最佳实践" data-url="http://kimmking.github.io/2017/06/06/json-best-practice/"></div>
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1_u3001JSON_u662F_u4EC0_u4E48"><span class="toc-number">1.</span> <span class="toc-text">1、JSON是什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2_u3001_u4F18_u7F3A_u70B9_u3001_u6807_u51C6_u4E0Eschema"><span class="toc-number">2.</span> <span class="toc-text">2、优缺点、标准与schema</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1__u7ED3_u6784_u4E0E_u7C7B_u578B"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 结构与类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2__u4F18_u70B9"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 优点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3__u7F3A_u70B9"><span class="toc-number">2.3.</span> <span class="toc-text">2.3 缺点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-__u5E38_u7528_u6280_u672F_u4E0E_u5DE5_u5177"><span class="toc-number">3.</span> <span class="toc-text">3. 常用技术与工具</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1__u76F8_u5173_u6280_u672F_u4EE5_u53CA_u4E0EXML_u7684_u5173_u7CFB"><span class="toc-number">3.1.</span> <span class="toc-text">3.1 相关技术以及与XML的关系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2_Java_u7C7B_u5E93"><span class="toc-number">3.2.</span> <span class="toc-text">3.2 Java类库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3__u5DE5_u5177"><span class="toc-number">3.3.</span> <span class="toc-text">3.3 工具</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-_JSON_u7F16_u7801_u6307_u5357"><span class="toc-number">4.</span> <span class="toc-text">4. JSON编码指南</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1_Google_JSON_u98CE_u683C_u6307_u5357"><span class="toc-number">4.1.</span> <span class="toc-text">4.1 Google JSON风格指南</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2__u4F7F_u7528JSON_u5B9E_u73B0API"><span class="toc-number">4.2.</span> <span class="toc-text">4.2 使用JSON实现API</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-_REST"><span class="toc-number">5.</span> <span class="toc-text">5. REST</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-_SwaggerUI_u5B9E_u73B0API_u6587_u6863_u7BA1_u7406_u4E0E_u5728_u7EBF_u6D4B_u8BD5"><span class="toc-number">6.</span> <span class="toc-text">6. SwaggerUI实现API文档管理与在线测试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-_JSON_u4F7F_u7528_u573A_u666F_u5206_u6790"><span class="toc-number">7.</span> <span class="toc-text">7. JSON使用场景分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-JSON_u7684_u4E00_u4E9B_u7ECF_u9A8C"><span class="toc-number">8.</span> <span class="toc-text">8.JSON的一些经验</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#8-1__u9075_u5FAAJava_Beans_u89C4_u8303_u4E0EJSON_u89C4_u8303"><span class="toc-number">8.1.</span> <span class="toc-text">8.1 遵循Java Beans规范与JSON规范</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-2__u4F7F_u7528_u6B63_u5E38_u7684key"><span class="toc-number">8.2.</span> <span class="toc-text">8.2 使用正常的key</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-3__u5173_u4E8E_u65E5_u671F_u5904_u7406"><span class="toc-number">8.3.</span> <span class="toc-text">8.3 关于日期处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-4__u81EA_u5B9A_u4E49_u5E8F_u5217_u5316_u4E0E_u53CD_u5E8F_u5217_u5316"><span class="toc-number">8.4.</span> <span class="toc-text">8.4 自定义序列化与反序列化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-5_JSONObject_u7684_u4F7F_u7528"><span class="toc-number">8.5.</span> <span class="toc-text">8.5 JSONObject的使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-6_Hibernate_u76F8_u5173_u95EE_u9898"><span class="toc-number">8.6.</span> <span class="toc-text">8.6 Hibernate相关问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-7__u6DF1_u5C42_u5D4C_u5957_u4E0E_u6CDB_u578B_u95EE_u9898"><span class="toc-number">8.7.</span> <span class="toc-text">8.7 深层嵌套与泛型问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-8__u62BD_u8C61_u7C7B_u578B_u4E0E_u5B50_u7C7B_u578B_u95EE_u9898"><span class="toc-number">8.8.</span> <span class="toc-text">8.8 抽象类型与子类型问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-9__u907F_u514D_u5FAA_u73AF_u5F15_u7528"><span class="toc-number">8.9.</span> <span class="toc-text">8.9 避免循环引用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-10__u6CE8_u610F_u7F16_u7801_u548C_u4E0D_u53EF_u89C1_u5B57_u7B26"><span class="toc-number">8.10.</span> <span class="toc-text">8.10 注意编码和不可见字符</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-fastjson_u7684_u6700_u4F73_u5B9E_u8DF5"><span class="toc-number">9.</span> <span class="toc-text">9.fastjson的最佳实践</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#9-1_Maven_u4E0B_u5F15_u5165Fastjson"><span class="toc-number">9.1.</span> <span class="toc-text">9.1 Maven下引入Fastjson</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-2__u5E8F_u5217_u5316_u4E00_u4E2A_u5BF9_u8C61_u6210JSON_u5B57_u7B26_u4E32"><span class="toc-number">9.2.</span> <span class="toc-text">9.2 序列化一个对象成JSON字符串</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-3__u53CD_u5E8F_u5217_u5316_u4E00_u4E2AJSON_u5B57_u7B26_u4E32_u6210Java_u5BF9_u8C61"><span class="toc-number">9.3.</span> <span class="toc-text">9.3 反序列化一个JSON字符串成Java对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-4__u65E5_u671F_u683C_u5F0F_u5904_u7406"><span class="toc-number">9.4.</span> <span class="toc-text">9.4 日期格式处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-5__u5E38_u89C1_u5E8F_u5217_u5316_u7279_u6027_u7684_u4F7F_u7528"><span class="toc-number">9.5.</span> <span class="toc-text">9.5 常见序列化特性的使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-6_Annotation_u6CE8_u89E3_u7684_u4F7F_u7528"><span class="toc-number">9.6.</span> <span class="toc-text">9.6 Annotation注解的使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-7__u81EA_u5B9A_u4E49_u5E8F_u5217_u5316_u4E0E_u53CD_u5E8F_u5217_u5316"><span class="toc-number">9.7.</span> <span class="toc-text">9.7 自定义序列化与反序列化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-8__u81EA_u5B9A_u4E49_u5E8F_u5217_u5316_u4E4B_u8FC7_u6EE4_u5668"><span class="toc-number">9.8.</span> <span class="toc-text">9.8 自定义序列化之过滤器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-9__u4E0ESpring_MVC_u7684_u914D_u5408_u4F7F_u7528"><span class="toc-number">9.9.</span> <span class="toc-text">9.9 与Spring MVC的配合使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-10__u4E0ESpring_Boot_u7684_u96C6_u6210_u4F7F_u7528"><span class="toc-number">9.10.</span> <span class="toc-text">9.10 与Spring Boot的集成使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-11__u6CDB_u578B_u5904_u7406"><span class="toc-number">9.11.</span> <span class="toc-text">9.11 泛型处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-12jaxrs_u652F_u6301"><span class="toc-number">9.12.</span> <span class="toc-text">9.12jaxrs支持</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-13_swagger_u652F_u6301"><span class="toc-number">9.13.</span> <span class="toc-text">9.13 swagger支持</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-14__u9ED8_u8BA4_u53C2_u6570_u914D_u7F6E"><span class="toc-number">9.14.</span> <span class="toc-text">9.14 默认参数配置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-Fastjson_u7684_u8BBE_u8BA1_u8BF4_u660E"><span class="toc-number">10.</span> <span class="toc-text">10.Fastjson的设计说明</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github 名片</p>
+<div class="github-card" data-github="kimmking" data-width="220" data-height="119" data-theme="medium">
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+  </div>
+
+
+
+  
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/web/" title="web">web<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/POI/" title="POI">POI<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/database/" title="database">database<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/json/" title="json">json<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/others/" title="others">others<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dubbo/" title="dubbo">dubbo<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://blog.csdn.net/kimmking" target="_blank" title="KimmKing&#39;s csdn Blog">KimmKing&#39;s csdn Blog</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://setting.iteye.com" target="_blank" title="KimmKing&#39;s iteye Blog">KimmKing&#39;s iteye Blog</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="https://github.com/kimmking" target="_blank" title="KimmKing&#39;s github">KimmKing&#39;s github</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://my.oschina.net/u/236747" target="_blank" title="KimmKing&#39;s oschina">KimmKing&#39;s oschina</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">新浪微博</p>
+    <iframe width="100%" height="550" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=2&ptype=1&speed=0&skin=1&isTitle=0&noborder=1&isWeibo=1&isFans=0&uid=1830159777&verifier=7c9f6081&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> I&#39;m KimmKing,an architect from Beijing of China.  <br/>
+			I&#39;ll record my footprints and notes in this blog.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/kimmking" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/kimmking" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		<a href="http://stackoverflow.com/users/kimmking" target="_blank" class="icon-stack-overflow" title="stackoverflow"></a>
+		
+		
+		<a href="https://twitter.com/kimmkingcn" target="_blank" class="icon-twitter" title="twitter"></a>
+		
+		
+		<a href="https://www.facebook.com/kimmkingcn" target="_blank" class="icon-facebook" title="facebook"></a>
+		
+		
+		
+		<a href="https://www.douban.com/people/kimmking" target="_blank" class="icon-douban" title="豆瓣"></a>
+		
+		
+		<a href="http://www.zhihu.com/people/kimmking" target="_blank" class="icon-zhihu" title="知乎"></a>
+		
+		
+		
+		<a href="mailto:kimmking@163.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2020 
+		
+		<a href="/about" target="_blank" title="kimmking">kimmking</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"kimmking"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
